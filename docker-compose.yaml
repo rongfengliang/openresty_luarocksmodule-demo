@@ -7,3 +7,12 @@ services:
    volumes:
    - "./app/:/opt/app/"
    - "./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf"
+  benthos:
+    image: jeffail/benthos
+    volumes:
+    - "./conf/webhook.yaml:/benthos.yaml"
+    ports:
+    - "4195:4195"
+  smtp2http:
+    image: uflare/smtp2http
+    command: --listen=:25 --webhook=http://benthos:4195/ --strict=false
